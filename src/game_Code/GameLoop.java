@@ -17,6 +17,7 @@ public class GameLoop extends JFrame {
         shipImages.add(""); // We will need to get some images of starwars ships to put in these array indexes  
         shipImages.add("");
         shipImages.add("");
+        shipImages.add("");
 
         player = new Player(0, 0, 0, 0, null, 0, 0); 
 
@@ -34,7 +35,7 @@ public class GameLoop extends JFrame {
 
     private void updateGame() {
         // Update game logic here
-        // For example, move the player, check collisions, etc.
+       
     }
 
     @Override
