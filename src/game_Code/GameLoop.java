@@ -14,7 +14,7 @@ public class GameLoop extends JFrame {
     public GameLoop() {
         shipImages = new ArrayList<>();
        
-        shipImages.add(""); // We will need to get some images of starwars ships to put in these array indexes  
+        shipImages.add("N1_Starfigher.png"); // We will need to get some images of starwars ships to put in these array indexes  
         shipImages.add("");
         shipImages.add("");
         shipImages.add("");
