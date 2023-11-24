@@ -17,9 +17,8 @@ public Player(int lives,int speed,int x,int y ,Ship playerShip,int width,int hei
  this.setLives(lives);
  this.setSpeed(speed);
  this.setLocaiton(x, y);
- this.playerShip = playerShip;
- this.width = width;
- this.height = height;
+ this.setPlayerShip(playerShip);
+ this.setDimenstions(width, height);
  }
 
 
@@ -59,9 +58,28 @@ public void setLocaiton(int x, int y) {
 	this.ypos = y;
 	this.xpos = x;
 }
+public void setWidth(int width) {
+	this.width = width;
+}
+public void setHeight(int height) {
+	this.height = height;
+}
+public int getWidth(int width) {
+	 return this.width;
+}
+public int getHeight(int height) {
+	return this.height;
+}
 public void setDimenstions(int width, int height) {
 	this.width = width;
 	this.height = height;
+}
+
+public void setPlayerShip(Ship playership) {
+	this.playerShip = playership;
+}
+public Ship getPlayerShip() {
+	return this.playerShip;
 }
 
 
