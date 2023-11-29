@@ -9,6 +9,7 @@ public class Projectile {
 	private int yPos;
 	
 	
+	
 	public Projectile(int w,int h, int damage,String weponName) {
 		
 	}

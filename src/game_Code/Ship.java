@@ -14,7 +14,7 @@ public class Ship {
 	public void setNumWep(int numberOfWepons) {
 		this.numWep = numberOfWepons;
 	}
-	public int getShipNum() {
+	public int getShipNum() {   
 		return this.shipNum;
 	}
 	public int getNumWep() {
