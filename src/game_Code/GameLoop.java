@@ -23,9 +23,13 @@ public class GameLoop extends JFrame {
         shipImages.add("Tri-Fighter.png");
         shipImages.add("Tie-Fighter.png");
         shipImages.add("Grievous-Ship.png");
-        shipImages.add("");
-        shipImages.add("");
-        shipImages.add("");
+        shipImages.add("death-star.png");
+        shipImages.add("malevolence-starship.png");
+        shipImages.add("falcon.png");
+        shipImages.add("death-star-2.png");
+        shipImages.add("star-destroyer.png");
+        shipImages.add("executor-star-destroyer.png");
+
 
         player = new Player(0, 0, 0, 0, null, 0, 0); 
 
