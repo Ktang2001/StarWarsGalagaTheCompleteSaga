@@ -110,8 +110,8 @@ public class GameLoop extends JFrame {
     
     public void paintComponent(Graphics g) {
         super.paintComponents(g);
+        //BackGround
         
-        // We will need to set up the background first
         // Then we need to draw the player and oppents at their repective positions 
     }
 
