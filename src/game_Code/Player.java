@@ -23,7 +23,7 @@ public Player(int lives,int speed,int x,int y ,Ship playerShip,int width,int hei
 
 
 public int getLives() {
- return lives;
+ return this.lives;
 }
 
 public void setLives(int lives) {
@@ -31,7 +31,7 @@ public void setLives(int lives) {
 }
 
 public int getSpeed() {
- return speed;
+ return this.speed;
 }
 
 public void setSpeed(int speed) {
@@ -39,7 +39,7 @@ public void setSpeed(int speed) {
 }
 
 public int getX() {
- return xpos;
+ return this.xpos;
 }
 
 public void setX(int x) {
@@ -47,7 +47,7 @@ public void setX(int x) {
 }
 
 public int getY() {
- return ypos;
+ return this.ypos;
 }
 
 public void setY(int y) {

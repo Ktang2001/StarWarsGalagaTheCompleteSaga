@@ -1,12 +1,17 @@
 package game_Code;
 
-public class Ship {
+
+
+public class Ship  {
+	
 	private int shipNum;
 	private int numWep;
+	private String playerShip = null; 
 	
-	public Ship(int shipNum, int numWep) {
+	public Ship(int shipNum, int numWep,String string) {
 		this.setShipNum(shipNum);
 		this.setNumWep(numWep);
+	    this.getPlayership();
 	}
 	public void setShipNum( int shipNum) {
 		this.shipNum = shipNum;
@@ -19,5 +24,11 @@ public class Ship {
 	}
 	public int getNumWep() {
 		return this.numWep;
+	}
+	public void setPlayerShip(String playership) {
+		this.playerShip = playership;
+	}
+	public String getPlayership() {
+		return this.playerShip;
 	}
 }
