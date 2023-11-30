@@ -58,6 +58,15 @@ public class GameLoop extends JFrame {
             }
         });
         timer.start();
+        JPanel space = new JPanel() {
+        	@Override
+        	protected void paintComponent(Graphics g) {
+        		super.paintComponent(g);
+        		g.setColor(Color.BLACK);
+        		g.fillRect(0, 0, 800, 600);
+        	}
+        };
+        setContentPane(space);
     }
     
     // Movement for Player
@@ -108,17 +117,15 @@ public class GameLoop extends JFrame {
     }
     		 
     
-    public void paintComponent(Graphics g) {
-        super.paintComponents(g);
-        //BackGround
-        
-        // Then we need to draw the player and oppents at their repective positions 
-    }
+
 
     public static void main(String[] args) {
+    	
     	GameLoop game = new GameLoop();
     	game.setSize(800,600);
     	game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     	game.setVisible(true);
+    	
     }
 }
