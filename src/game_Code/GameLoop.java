@@ -64,23 +64,20 @@ public class GameLoop extends JFrame {
 	private class DirectionListener implements KeyListener{
 		@Override
 		public void keyPressed(KeyEvent e) {
+			
 			 switch (e.getKeyCode())
                {
                   case KeyEvent.VK_UP:
-                     y += up;
-                     player.setY(y);
+                     player.setY(player.getY()+up);
                      break;
                   case KeyEvent.VK_DOWN:
-                      y -= down;
-                      player.setY(y);
+                      player.setY(player.getY()- down);
                      break;
                   case KeyEvent.VK_LEFT:
-                      x += left;
-                      player.setX(x);
+                      player.setX(player.getX()- left);
                      break;
                   case KeyEvent.VK_RIGHT:
-                      x -= right;
-                      player.setX(x);
+                      player.setX(player.getX()+ right);
                      break;
                }
 			 repaint();
