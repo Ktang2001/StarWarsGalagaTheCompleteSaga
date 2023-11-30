@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Random;
 
 public class GameLoop extends JFrame {
-    private List<String> shipImages;
+
+	private static final long serialVersionUID = -602017958886020199L;
+	private List<String> shipImages;
     private Player player;
     final int up = 5;
   	final int down = 5;
   	final int left = 5;
   	final int right = 5;
-    int y = player.getY();
-    int x = player.getX();
     private List<Object[]> opponents;
 
     public GameLoop() {
@@ -110,7 +110,7 @@ public class GameLoop extends JFrame {
         }
     }
     		 
-    @Override	
+    
     public void paintComponent(Graphics g) {
         super.paintComponents(g);
         
