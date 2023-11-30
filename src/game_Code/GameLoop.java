@@ -48,11 +48,11 @@ public class GameLoop extends JFrame {
         Ship playerShip = new Ship (1,2,shipImages.get(1));
         player = new Player(100, 0, 200, 200, playerShip, 0, 0); 
 
-        // Set up the game loop timer
+  
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Perform game logic here
+               
                 updateGame();
                 repaint(); 
             }
@@ -89,9 +89,9 @@ public class GameLoop extends JFrame {
 	}
 
     public void updateGame(){
-        // Update game logic here
+ 
     	
-        // Spawn new enemies or power-ups
+       
     	Random rand = new Random();
         int num = rand.nextInt(1, 10);
         int randX, randShip;
@@ -99,7 +99,7 @@ public class GameLoop extends JFrame {
 
         for (int i = 0; i < num; i++) {
             randX = rand.nextInt(0, 799);
-            randShip = rand.nextInt(0, shipImages.size()); // Assuming 0 to size of shipImages
+            randShip = rand.nextInt(0, shipImages.size());
             opponentShip = new Ship(randShip, 2, shipImages.get(randShip));
 
             Object[] opponent = new Object[] {randX, 0, opponentShip, 25, 25}; 
