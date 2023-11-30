@@ -102,7 +102,7 @@ public class GameLoop extends JFrame {
             randShip = rand.nextInt(0, shipImages.size()); // Assuming 0 to size of shipImages
             opponentShip = new Ship(randShip, 2, shipImages.get(randShip));
 
-            Object[] opponent = new Object[] {randX, 0, opponentShip, 25, 25}; // Example properties
+            Object[] opponent = new Object[] {randX, 0, opponentShip, 25, 25}; 
             opponents.add(opponent);
         }
     }
