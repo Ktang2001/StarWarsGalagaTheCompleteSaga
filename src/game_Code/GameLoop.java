@@ -132,6 +132,12 @@ public class GameLoop extends JFrame {
             Object[] opponent = new Object[] {randX, 0, opponentShip, 3, 3}; 
             opponents.add(opponent);
         }
+        for (Object[] opponent : opponents) {
+            int opponentY = (int) opponent[1];
+            opponentY += 5; 
+            opponent[1] = opponentY;
+
+          }
     }
     		 
     
