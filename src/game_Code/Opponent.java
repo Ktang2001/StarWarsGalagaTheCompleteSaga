@@ -8,14 +8,18 @@ import java.awt.*;
 
 
 public class Opponent {
+	 public Projectile projectileWidth;
+	 public Projectile projectileHeight;
 	 private int x, y;
      private int width, height;
      private int speed;
      private int opponentWidth;
      private int opponentHeight;
      private int opponentSpeed;
-     private Projectile projectileWidth;
-     private Projectile projectileHeight;
+     private static final int OPPONENT_WIDTH = 50;
+     private static final int PROJECTILE_WIDTH = 5;
+     private static final Color RED = Color.RED;
+   
      
      
      private List<Projectile> projectiles;
@@ -42,8 +46,14 @@ public class Opponent {
      }
 
      public void shoot() {
-         Projectile projectile = new Projectile(x + (width / 2) - (projectileWidth / 2), y + height, projectileWidth, projectileHeight, Color.RED);
-         projectiles.add(projectile);
+    	 int projectileX = x + (OPPONENT_WIDTH / 2) - (PROJECTILE_WIDTH / 2);
+         int projectileY = y;
+         int projectileWidth = PROJECTILE_WIDTH; 
+         int projectileHeight = PROJECTILE_WIDTH; 
+         int projectileSpeed = 5; 
+    	 Projectile newProjectile = new Projectile(projectileX, projectileY, projectileWidth, projectileHeight, projectileSpeed, RED);
+         newProjectile.setProjectileSpeed(projectileSpeed);
+         projectiles.add(newProjectile);
      }
 
      public void updateProjectiles() {
