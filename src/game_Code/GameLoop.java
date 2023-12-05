@@ -59,7 +59,7 @@ public class GameLoop extends JFrame {
     private void handleKeyPress(KeyEvent e) {
         if (player.getGameState() == MENU) {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                startGame();
+                startGame());
             } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 System.exit(0);
             }
@@ -92,7 +92,9 @@ public class GameLoop extends JFrame {
 
     private void updateGame() {
         if (player.getGameState() == GAME) {
-            player.move(null);
+        	boolean[] keys = new boolean[256];
+        	
+            player.move(keys);
 
             generateObstacles();
 
@@ -109,7 +111,17 @@ public class GameLoop extends JFrame {
                     obstacle.shoot();
                     enemyFireCooldown = 1.0f / enemyFireRate;
                 }
+                
+                List<Projectile> opponentProjectilesToRemove = new ArrayList<>();
+                for (Projectile projectile : obstacle.getProjectiles()) {
+                    projectile.move();
+                    if (projectile.getY() > height) {
+                        opponentProjectilesToRemove.add(projectile);
+                    }
+                }
+                obstacle.getProjectiles().removeAll(opponentProjectilesToRemove);
             }
+            
 
             if (enemyFireCooldown > 0) {
                 enemyFireCooldown -= 1.0 / 60;
@@ -117,11 +129,8 @@ public class GameLoop extends JFrame {
 
             player.updateProjectiles();
 
-            for (Opponent obstacle : obstacles) {
-                obstacle.updateProjectiles();
-            }
-
             checkCollisions();
+            
             checkPlayerOutOfLives();
         }
     }
