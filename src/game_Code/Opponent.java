@@ -14,6 +14,7 @@ public class Opponent {
      private int opponentWidth;
      private int opponentHeight;
      private int opponentSpeed;
+     private Image image;
      private static final int OPPONENT_WIDTH = 50;
      private static final int PROJECTILE_WIDTH = 50;
      private static final int PROJECTILE_HEIGHT = 50;
@@ -70,6 +71,13 @@ public class Opponent {
          }
      }
 
+     public Image getImage() {
+         return this.image;
+     }
+     
+     public void setImage(Image playerShip) {
+     	this.image = playerShip;
+     }
      public int getX() {
          return x;
      }
