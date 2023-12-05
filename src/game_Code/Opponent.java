@@ -8,8 +8,6 @@ import java.awt.*;
 
 
 public class Opponent {
-	 public Projectile projectileWidth;
-	 public Projectile projectileHeight;
 	 private int x, y;
      private int width, height;
      private int speed;
@@ -17,11 +15,9 @@ public class Opponent {
      private int opponentHeight;
      private int opponentSpeed;
      private static final int OPPONENT_WIDTH = 50;
-     private static final int PROJECTILE_WIDTH = 5;
+     private static final int PROJECTILE_WIDTH = 50;
+     private static final int PROJECTILE_HEIGHT = 50;
      private static final Color RED = Color.RED;
-   
-     
-     
      private List<Projectile> projectiles;
 
      public Opponent() {
@@ -49,7 +45,7 @@ public class Opponent {
     	 int projectileX = x + (OPPONENT_WIDTH / 2) - (PROJECTILE_WIDTH / 2);
          int projectileY = y;
          int projectileWidth = PROJECTILE_WIDTH; 
-         int projectileHeight = PROJECTILE_WIDTH; 
+         int projectileHeight = PROJECTILE_HEIGHT; 
          int projectileSpeed = 5; 
     	 Projectile newProjectile = new Projectile(projectileX, projectileY, projectileWidth, projectileHeight, projectileSpeed, RED);
          newProjectile.setProjectileSpeed(projectileSpeed);
@@ -61,7 +57,7 @@ public class Opponent {
          while (iterator.hasNext()) {
              Projectile projectile = iterator.next();
              projectile.move();
-             if (projectile.getY() > height) {
+             if (projectile.getY() > PROJECTILE_HEIGHT) {
                  iterator.remove();
              }
          }
