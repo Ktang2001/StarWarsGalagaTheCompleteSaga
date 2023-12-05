@@ -87,9 +87,10 @@ public class Opponent {
          return this.image;
      }
      
-     public void setImage(Image playerShip) {
-     	this.image = playerShip;
+     public void setImage(Image opponentShip) {
+     	this.image = opponentShip;
      }
+     
      public int getX() {
          return x;
      }
