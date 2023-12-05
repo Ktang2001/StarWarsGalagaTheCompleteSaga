@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
-public class Player extends JPanel implements ActionListener, KeyListener{
+public class Player implements ActionListener, KeyListener {
 	/**
 	 * 
 	 */
