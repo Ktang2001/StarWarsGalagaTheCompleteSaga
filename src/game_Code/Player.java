@@ -20,6 +20,7 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     private int x, y, lives;
     private List<Projectile> projectiles;
     private boolean engineFlameVisible;
+    private int gameState;
 
     private static final int PLAYER_WIDTH = 50;
     private static final int PLAYER_HEIGHT = 50;
@@ -126,38 +127,50 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     }
     
     public boolean intersects(Opponent obstacle) {
-		// Create code for collisions!!
-		return false;
+    	return (x < obstacle.getX() + obstacle.getWidth() &&
+                x + PLAYER_WIDTH > obstacle.getX() &&
+                y < obstacle.getY() + obstacle.getHeight() &&
+                y + PLAYER_HEIGHT > obstacle.getY());
 	}
 	
 	public int getGameState() {
-		// Need to create getter for the menu!!
-		return 0;
+		return this.gameState;
 	}
 	
+	public void setGameState(int gameState) {
+		this.gameState = gameState;
+	} 
+	
 	public void reset() {
-		// Need to create code for the reset!!
-		
+		resetPosition();
+		setLives(PLAYER_LIVES);
 	}
 	
 	public void draw(Graphics g) {
-		// Need to create code for the draw function!!
+		g.drawImage(image, x, y, this);
 		
-	}
-
-	public void setGameState(int menu) {
-		// Need to create setter for the menu!!
-		
+		for (Projectile projectile : projectiles) {
+	        g.setColor(Color.BLUE); 
+	        g.fillRect(projectile.getX(), projectile.getY(), projectile.getWidth(), projectile.getHeight());
+	    }
 	}
 	
 	public void updateProjectiles() {
-		// Need to create code to update Projectiles!!
-		
+		List<Projectile> projectilesToRemove = new ArrayList<>();
+	    for (Projectile projectile : projectiles) {
+	        projectile.move(); 
+	        if (projectile.getY() < 0) {
+	            projectilesToRemove.add(projectile);
+	        }
+	    }
+	    projectiles.removeAll(projectilesToRemove);
 	}
 	
 	public void handleKeyPress(KeyEvent e) {
-		// Create code for the handle key press here!!
-		
+		int key = e.getKeyCode();
+	    if (key == KeyEvent.VK_SPACE) {
+	        shoot();
+	    }
 	}
 
 	
