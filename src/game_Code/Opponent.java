@@ -26,6 +26,7 @@ public class Opponent {
      public Opponent() {
          x = new Random().nextInt(width - OPPONENT_WIDTH);
          image = new ImageIcon("VultureDroid.png").getImage();
+         image = new ImageIcon("Tri-Fighter.png").getImage();
          image = image.getScaledInstance(OPPONENT_WIDTH, OPPONENT_HEIGHT, Image.SCALE_DEFAULT);
          y = 0;
          width = OPPONENT_WIDTH;
