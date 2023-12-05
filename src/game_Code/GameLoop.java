@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GameLoop extends JFrame {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private static final int MENU = 0;
     private static final int GAME = 1;
@@ -169,11 +167,11 @@ public class GameLoop extends JFrame {
 
     private void drawGame(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0,Toolkit.getDefaultToolkit().getScreenSize().width , Toolkit.getDefaultToolkit().getScreenSize().height);
 
         if (player.getGameState() == MENU) {
             g.setColor(Color.WHITE);
-            g.drawString("Press SPACE to Start or ESC to Exit", width / 2 - 200, height / 2);
+            g.drawString("Press SPACE to Start or ESC to Exit",Toolkit.getDefaultToolkit().getScreenSize().width/2  , Toolkit.getDefaultToolkit().getScreenSize().height/2);
         } else if (player.getGameState() == GAME) {
             player.draw(g);
 
@@ -192,6 +190,7 @@ public class GameLoop extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             GameLoop game = new GameLoop();
+            game.setExtendedState(JFrame.MAXIMIZED_BOTH);
             game.setVisible(true);
 
             Timer timer = new Timer(16, new ActionListener() {
