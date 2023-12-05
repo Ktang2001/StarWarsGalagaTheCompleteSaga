@@ -1,11 +1,13 @@
 package game_Code;
 import javax.swing.*;
+import javax.swing.Timer;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.Random;
 
@@ -57,7 +59,7 @@ public class GameLoop extends JFrame {
         playerShip.setImage(playerShip.getShipNum(), playerShip.getHeight(), playerShip.getWidth());
         player = new Player(100, 100, 400, 600, playerShip, PLAYER_SPEED, PLAYER_SPEED);
 
-        Timer timer = new Timer(16, new ActionListener() { // 60 frames per second
+        Timer timer = new Timer(16, new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateGame();
@@ -157,6 +159,15 @@ public class GameLoop extends JFrame {
             Image scaledOpponentShip = opponentShip.getImage().getScaledInstance(OPPONENT_WIDTH, OPPONENT_HEIGHT, Image.SCALE_SMOOTH);
             g.drawImage(scaledOpponentShip, opponentX, opponentY, this);
         }
+    }
+    
+    protected void gameOver(Player player) {
+
+        System.out.println("Game Over");
+
+        resetPosition();
+        player.getlives = PLAYER_LIVES;
+        projectiles.clear();  
     }
 
     public static void main(String[] args) {
