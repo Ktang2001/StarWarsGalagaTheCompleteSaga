@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 public class Player extends JPanel implements ActionListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
-	private Image image;
+	private Image playerImage;
     private int x, y, lives;
     private List<Projectile> projectiles;
     private boolean engineFlameVisible;
@@ -32,8 +32,8 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     private static final Color BLUE = Color.BLUE;
 
     public Player() {
-        image = new ImageIcon("N1_Starfighter.png").getImage();
-        image = image.getScaledInstance(PLAYER_WIDTH, PLAYER_HEIGHT, Image.SCALE_DEFAULT);
+    	playerImage = new ImageIcon("N1_Starfighter.png").getImage();
+        playerImage = playerImage.getScaledInstance(PLAYER_WIDTH, PLAYER_HEIGHT, Image.SCALE_DEFAULT);
         resetPosition();
         lives = PLAYER_LIVES;
         projectiles = new ArrayList<>();
@@ -87,11 +87,11 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     }
 
     public Image getImage() {
-        return this.image;
+        return this.playerImage;
     }
     
     public void setImage(Image playerShip) {
-    	this.image = playerShip;
+    	this.playerImage = playerShip;
     }
 
     public int getX() {
@@ -147,7 +147,7 @@ public class Player extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	public void draw(Graphics g) {
-		g.drawImage(image, x, y, this);
+		g.drawImage(playerImage, x, y, this);
 		
 		for (Projectile projectile : projectiles) {
 	        g.setColor(Color.BLUE); 
