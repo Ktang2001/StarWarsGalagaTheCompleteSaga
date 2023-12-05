@@ -124,7 +124,43 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     public void setLives(int lives) {
     	this.lives = lives;
     }
+    
+    public boolean intersects(Opponent obstacle) {
+		// Create code for collisions!!
+		return false;
+	}
+	
+	public int getGameState() {
+		// Need to create getter for the menu!!
+		return 0;
+	}
+	
+	public void reset() {
+		// Need to create code for the reset!!
+		
+	}
+	
+	public void draw(Graphics g) {
+		// Need to create code for the draw function!!
+		
+	}
 
+	public void setGameState(int menu) {
+		// Need to create setter for the menu!!
+		
+	}
+	
+	public void updateProjectiles() {
+		// Need to create code to update Projectiles!!
+		
+	}
+	
+	public void handleKeyPress(KeyEvent e) {
+		// Create code for the handle key press here!!
+		
+	}
+
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -149,7 +185,7 @@ public class Player extends JPanel implements ActionListener, KeyListener{
 		
 	}
 
-    // Additional methods for handling collisions, updating lives
+    // Additional methods for updating lives
 
 }
 

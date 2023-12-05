@@ -1,7 +1,7 @@
 package game_Code;
+
 import javax.swing.*;
 import javax.swing.Timer;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,21 +11,15 @@ import java.awt.event.KeyListener;
 import java.util.*;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 
 public class GameLoop extends JFrame {
-
-    private static final int MENU = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final int MENU = 0;
     private static final int GAME = 1;
 
     private int width, height;
@@ -35,13 +29,13 @@ public class GameLoop extends JFrame {
     private int playerSpeed = 5, obstacleSpeed = 3;
     private int playerLives = 3;
     private int score = 0;
-    private List<Opponenet> obstacles = new ArrayList<Opponenet>();
+    private List<Opponent> obstacles = new ArrayList<Opponent>();
     private Player player;
     private float enemyFireRate = 1.0f;
     private float enemyFireCooldown = 0;
 
     public GameLoop() {
-        setTitle("Cylon Attack");
+        setTitle("Star Wars Attack: The Complete Saga");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -49,8 +43,8 @@ public class GameLoop extends JFrame {
         height = 700;
         setSize(width, height);
 
-        playerImage = new ImageIcon("vipers.png").getImage().getScaledInstance(playerWidth, playerHeight, Image.SCALE_SMOOTH);
-        obstacleImage = new ImageIcon("CylonRadiers.png").getImage().getScaledInstance(obstacleWidth, obstacleHeight, Image.SCALE_SMOOTH);
+        playerImage = new ImageIcon("N1_Starfighter.png").getImage().getScaledInstance(playerWidth, playerHeight, Image.SCALE_SMOOTH);
+        obstacleImage = new ImageIcon("VultureDroid.png").getImage().getScaledInstance(obstacleWidth, obstacleHeight, Image.SCALE_SMOOTH);
         player = new Player();
 
         addKeyListener(new KeyAdapter() {
@@ -93,20 +87,20 @@ public class GameLoop extends JFrame {
 
     private void generateObstacles() {
         if (new Random().nextInt(100) < 10) {
-            Obstacle obstacle = new Obstacle();
+            Opponent obstacle = new Opponent();
             obstacles.add(obstacle);
         }
     }
 
     private void updateGame() {
         if (player.getGameState() == GAME) {
-            player.move();
+            player.move(null);
 
             generateObstacles();
 
-            Iterator<Obstacle> iterator = obstacles.iterator();
+            Iterator<Opponent> iterator = obstacles.iterator();
             while (iterator.hasNext()) {
-                Obstacle obstacle = iterator.next();
+                Opponent obstacle = iterator.next();
                 obstacle.move();
                 if (obstacle.getY() > height) {
                     iterator.remove();
@@ -125,7 +119,7 @@ public class GameLoop extends JFrame {
 
             player.updateProjectiles();
 
-            for (Obstacle obstacle : obstacles) {
+            for (Opponent obstacle : obstacles) {
                 obstacle.updateProjectiles();
             }
 
@@ -139,9 +133,9 @@ public class GameLoop extends JFrame {
         while (playerProjectilesIterator.hasNext()) {
             Projectile playerProjectile = playerProjectilesIterator.next();
 
-            Iterator<Obstacle> obstaclesIterator = obstacles.iterator();
+            Iterator<Opponent> obstaclesIterator = obstacles.iterator();
             while (obstaclesIterator.hasNext()) {
-                Obstacle obstacle = obstaclesIterator.next();
+                Opponent obstacle = obstaclesIterator.next();
 
                 Iterator<Projectile> obstacleProjectilesIterator = obstacle.getProjectiles().iterator();
                 while (obstacleProjectilesIterator.hasNext()) {
@@ -157,9 +151,9 @@ public class GameLoop extends JFrame {
             }
         }
 
-        Iterator<Obstacle> obstaclesIterator = obstacles.iterator();
+        Iterator<Opponent> obstaclesIterator = obstacles.iterator();
         while (obstaclesIterator.hasNext()) {
-            Obstacle obstacle = obstaclesIterator.next();
+            Opponent obstacle = obstaclesIterator.next();
             if (player.intersects(obstacle)) {
                 player.setLives(player.getLives() - 1);
                 obstaclesIterator.remove();
@@ -183,8 +177,8 @@ public class GameLoop extends JFrame {
         } else if (player.getGameState() == GAME) {
             player.draw(g);
 
-            for (Obstacle obstacle : obstacles) {
-                obstacle.draw(g);
+            for (Opponent obstacle : obstacles) {
+                obstacle.draw(g, obstacleImage);
             }
         }
     }

@@ -51,4 +51,9 @@ public class Projectile {
 	public void setProjectileSpeed(int speed) {
 		this.projectileSpeed = speed;
 	}
+
+	public boolean intersects(Projectile obstacleProjectile) {
+		// Need to add code for collisions!!
+		return false;
+	}
 }
