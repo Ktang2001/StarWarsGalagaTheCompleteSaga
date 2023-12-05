@@ -122,6 +122,10 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     public int getLives() {
         return this.lives;
     }
+    
+    public void setLives(int lives) {
+    	this.lives = lives;
+    }
 
 	@Override
 	public void keyTyped(KeyEvent e) {
