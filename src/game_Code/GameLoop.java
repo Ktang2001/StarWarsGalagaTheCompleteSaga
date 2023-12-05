@@ -59,7 +59,7 @@ public class GameLoop extends JFrame {
     private void handleKeyPress(KeyEvent e) {
         if (player.getGameState() == MENU) {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                startGame());
+                startGame();
             } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 System.exit(0);
             }
