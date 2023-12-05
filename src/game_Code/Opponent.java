@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
+
 import java.awt.*;
 
 
@@ -11,22 +14,23 @@ public class Opponent {
 	 private int x, y;
      private int width, height;
      private int speed;
-     private int opponentWidth;
-     private int opponentHeight;
-     private int opponentSpeed;
      private Image image;
      private static final int OPPONENT_WIDTH = 50;
+     private static final int OPPONENT_HEIGHT = 50;
+     private static final int OPPONENT_SPEED = 5;
      private static final int PROJECTILE_WIDTH = 50;
      private static final int PROJECTILE_HEIGHT = 50;
      private static final Color RED = Color.RED;
      private List<Projectile> projectiles;
 
      public Opponent() {
-         x = new Random().nextInt(width - opponentWidth);
+         x = new Random().nextInt(width - OPPONENT_WIDTH);
+         image = new ImageIcon("VultureDroid.png").getImage();
+         image = image.getScaledInstance(OPPONENT_WIDTH, OPPONENT_HEIGHT, Image.SCALE_DEFAULT);
          y = 0;
-         width = opponentWidth;
-         height = opponentHeight;
-         speed = opponentSpeed;
+         width = OPPONENT_WIDTH;
+         height = OPPONENT_HEIGHT;
+         speed = OPPONENT_SPEED;
          projectiles = new ArrayList<>();
      }
 
@@ -38,7 +42,7 @@ public class Opponent {
      }
 
      public void resetPosition() {
-         x = new Random().nextInt(width - opponentWidth);
+         x = new Random().nextInt(width - OPPONENT_WIDTH);
          y = 0;
      }
 
