@@ -43,6 +43,14 @@ public class Player extends JPanel implements ActionListener, KeyListener{
         setFocusable(true);
     }
     
+    private void setX(int x) {
+    	this.x = x;
+    }
+    
+    private void setY(int y) {
+    	this.y = y;
+    }
+    
     private void resetPosition() {
         x = (WIDTH - PLAYER_WIDTH) / 2;
         y = HEIGHT - PLAYER_HEIGHT;
