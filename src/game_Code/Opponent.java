@@ -75,6 +75,13 @@ public class Opponent {
              projectile.draw(g);
          }
      }
+     
+     public boolean intersects(Player obstacle) {
+     	return (x < obstacle.getX() + obstacle.getWidth() &&
+                 x + OPPONENT_WIDTH > obstacle.getX() &&
+                 y < obstacle.getY() + obstacle.getHeight() &&
+                 y + OPPONENT_HEIGHT > obstacle.getY());
+ 	}
 
      public Image getImage() {
          return this.image;
