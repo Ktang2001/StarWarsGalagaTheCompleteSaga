@@ -56,7 +56,7 @@ public class GameLoop extends JFrame {
         Ship playerShip = new Ship(1, 2, shipImages.get(1), PLAYER_WIDTH, PLAYER_HEIGHT);
         playerShip.setWidth(PLAYER_WIDTH);
         playerShip.setHeight(PLAYER_HEIGHT);
-        playerShip.setImage(playerShip.getShipNum(), playerShip.getHeight(), playerShip.getWidth());
+        playerShip.setImage(shipImages.get(1));
         Player player = new Player();
 
         Timer timer = new Timer(16, new ActionListener() { 
