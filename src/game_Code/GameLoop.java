@@ -57,7 +57,7 @@ public class GameLoop extends JFrame {
         playerShip.setWidth(PLAYER_WIDTH);
         playerShip.setHeight(PLAYER_HEIGHT);
         playerShip.setImage(playerShip.getShipNum(), playerShip.getHeight(), playerShip.getWidth());
-        player = new Player(100, 100, 400, 600, playerShip, PLAYER_SPEED, PLAYER_SPEED);
+        Player player = new Player();
 
         Timer timer = new Timer(16, new ActionListener() { 
             @Override
@@ -148,7 +148,7 @@ public class GameLoop extends JFrame {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        Image scaledPlayerShip = player.getPlayerShip().getImage().getScaledInstance(PLAYER_WIDTH, PLAYER_HEIGHT, Image.SCALE_SMOOTH);
+        Image scaledPlayerShip = player.getImage().getScaledInstance(PLAYER_WIDTH, PLAYER_HEIGHT, Image.SCALE_SMOOTH);
         g.drawImage(scaledPlayerShip, player.getX(), player.getY(), this);
 
         for (Object[] opponent : opponents) {
@@ -161,14 +161,7 @@ public class GameLoop extends JFrame {
         }
     }
     
-    protected void gameOver(Player player) {
 
-        System.out.println("Game Over");
-
-        resetPosition();
-        player.getlives = PLAYER_LIVES;
-        projectiles.clear();  
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
