@@ -141,7 +141,7 @@ public class GameLoop extends JFrame {
             opponent[1] = opponentY;
         }
     }
-
+// Push
     private void drawGame(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
