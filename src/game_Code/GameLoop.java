@@ -125,8 +125,8 @@ public class GameLoop extends JFrame {
         
 
         for (int i = 0; i < num; i++) {
-            randX = rand.nextInt(0, 799);
-            randShip = rand.nextInt(0, shipImages.size());
+            randX = rand.nextInt(0, Toolkit.getDefaultToolkit().getScreenSize().width);
+            randShip = rand.nextInt(7,11 );
             opponentShip = new Ship(randShip, 2, shipImages.get(randShip));
 
             Object[] opponent = new Object[] {randX, 0, opponentShip, 3, 3}; 
@@ -146,8 +146,9 @@ public class GameLoop extends JFrame {
     public static void main(String[] args) {
     	
     	GameLoop game = new GameLoop();
-    	game.setSize(800,600);
+    	game.setExtendedState(JFrame.MAXIMIZED_BOTH);
     	game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	game.setSize(Toolkit.getDefaultToolkit().getScreenSize());
     	game.setFocusable(true);
     	game.setVisible(true);
     	
