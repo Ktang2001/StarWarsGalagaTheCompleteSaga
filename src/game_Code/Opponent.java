@@ -1,15 +1,23 @@
 package game_Code;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.awt.*;
+
 
 public class Opponent {
 	 private int x, y;
      private int width, height;
      private int speed;
+     private int opponentWidth;
+     private int opponentHeight;
+     private int opponentSpeed;
+     private Projectile projectileWidth;
+     private Projectile projectileHeight;
+     
+     
      private List<Projectile> projectiles;
 
      public Opponent() {
@@ -49,8 +57,8 @@ public class Opponent {
          }
      }
 
-     public void draw(Graphics g) {
-         g.drawImage(opponentImage, x, y, null);
+     public void draw(Graphics g, Image opponentImage) {
+         g.drawImage(opponentImage , x, y, null);
          for (Projectile projectile : projectiles) {
              projectile.draw(g);
          }
