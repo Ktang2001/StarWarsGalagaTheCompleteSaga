@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
-public class Player implements ActionListener, KeyListener {
-	/**
-	 * 
-	 */
+public class Player extends JPanel implements ActionListener, KeyListener{
+
 	private static final long serialVersionUID = 1L;
 	private Image image;
     private int x, y, lives;

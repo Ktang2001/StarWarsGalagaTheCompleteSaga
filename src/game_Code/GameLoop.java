@@ -5,167 +5,212 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
 public class GameLoop extends JFrame {
 
-    private static final long serialVersionUID = -602017958886020199L;
-    private static final int PLAYER_SPEED = 5;
-    private static final int OPPONENT_SPEED = 5;
-    private static final int PLAYER_WIDTH = 10;
-    private static final int PLAYER_HEIGHT = 10;
-    private static final int OPPONENT_WIDTH = 10;
-    private static final int OPPONENT_HEIGHT = 10;
+    private static final int MENU = 0;
+    private static final int GAME = 1;
 
-    private List<String> shipImages;
+    private int width, height;
+    private Image playerImage, obstacleImage;
+    private int playerWidth = 50, playerHeight = 75;
+    private int obstacleWidth = 50, obstacleHeight = 50;
+    private int playerSpeed = 5, obstacleSpeed = 3;
+    private int playerLives = 3;
+    private int score = 0;
+    private List<Opponenet> obstacles = new ArrayList<Opponenet>();
     private Player player;
-    private List<Object[]> opponents;
+    private float enemyFireRate = 1.0f;
+    private float enemyFireCooldown = 0;
 
     public GameLoop() {
-        initializeGame();
-        setupUI();
-    }
+        setTitle("Cylon Attack");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
 
-    private void initializeGame() {
-        addKeyListener(new DirectionListener());
-        shipImages = new ArrayList<>();
+        width = 1000;
+        height = 700;
+        setSize(width, height);
 
-        shipImages.add("N1_Starfigher.png");   
-        shipImages.add("JediStarfighter.png");
-        shipImages.add("ARC-170.png");
-        shipImages.add("X-Wing.png");
-        shipImages.add("Y-Wing.png");
-        shipImages.add("falcon.png");
-        shipImages.add("VultureDroid.png");
-        shipImages.add("Tri-Fighter.png");
-        shipImages.add("battle-station.png");
-        shipImages.add("Grievous-Ship.png");
-        shipImages.add("malevolence-starship.png");
-        shipImages.add("Tie-Fighter.png");
-        shipImages.add("star-destroyer.png");
-        shipImages.add("executor-star-destroyer.png");
-        shipImages.add("death-star.png");
-        shipImages.add("death-star-2.png");
+        playerImage = new ImageIcon("vipers.png").getImage().getScaledInstance(playerWidth, playerHeight, Image.SCALE_SMOOTH);
+        obstacleImage = new ImageIcon("CylonRadiers.png").getImage().getScaledInstance(obstacleWidth, obstacleHeight, Image.SCALE_SMOOTH);
+        player = new Player();
 
-        opponents = new ArrayList<>();
-
-        Ship playerShip = new Ship(1, 2, shipImages.get(1), PLAYER_WIDTH, PLAYER_HEIGHT);
-        playerShip.setWidth(PLAYER_WIDTH);
-        playerShip.setHeight(PLAYER_HEIGHT);
-        playerShip.setImage(shipImages.get(1));
-        Player player = new Player();
-
-        Timer timer = new Timer(16, new ActionListener() { 
+        addKeyListener(new KeyAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                updateGame();
-                repaint();
+            public void keyPressed(KeyEvent e) {
+                handleKeyPress(e);
             }
         });
-        timer.start();
-    }
 
-    private void setupUI() {
-        JPanel space = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                drawGame(g);
-            }
-        };
-        setContentPane(space);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setFocusable(true);
-        setVisible(true);
+        requestFocusInWindow();
     }
 
-    private class DirectionListener implements KeyListener {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    player.setY(player.getY() - PLAYER_SPEED);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    player.setY(player.getY() + PLAYER_SPEED);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    player.setX(player.getX() - PLAYER_SPEED);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    player.setX(player.getX() + PLAYER_SPEED);
-                    break;
+    private void handleKeyPress(KeyEvent e) {
+        if (player.getGameState() == MENU) {
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                startGame();
+            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                System.exit(0);
             }
-
-            repaint();
+        } else if (player.getGameState() == GAME) {
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                player.shoot();
+            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                player.setGameState(MENU);
+            } else {
+                player.handleKeyPress(e);
+            }
         }
+    }
 
-        @Override
-        public void keyTyped(KeyEvent e) {
-        }
+    private void startGame() {
+        player.setGameState(GAME);
+        player.reset();
+        obstacles.clear();
+        score = 0;
+        player.setLives(playerLives);
+        player.resetPosition();
+    }
 
-        @Override
-        public void keyReleased(KeyEvent e) {
+    private void generateObstacles() {
+        if (new Random().nextInt(100) < 10) {
+            Obstacle obstacle = new Obstacle();
+            obstacles.add(obstacle);
         }
     }
 
     private void updateGame() {
-        updateOpponents();
+        if (player.getGameState() == GAME) {
+            player.move();
+
+            generateObstacles();
+
+            Iterator<Obstacle> iterator = obstacles.iterator();
+            while (iterator.hasNext()) {
+                Obstacle obstacle = iterator.next();
+                obstacle.move();
+                if (obstacle.getY() > height) {
+                    iterator.remove();
+                    score += 10;
+                }
+
+                if (new Random().nextFloat() < enemyFireRate && enemyFireCooldown <= 0) {
+                    obstacle.shoot();
+                    enemyFireCooldown = 1.0f / enemyFireRate;
+                }
+            }
+
+            if (enemyFireCooldown > 0) {
+                enemyFireCooldown -= 1.0 / 60;
+            }
+
+            player.updateProjectiles();
+
+            for (Obstacle obstacle : obstacles) {
+                obstacle.updateProjectiles();
+            }
+
+            checkCollisions();
+            checkPlayerOutOfLives();
+        }
     }
 
-    private void updateOpponents() {
-        Random rand = new Random();
-        int num = 1;
-        int randX, randShip;
-        Ship opponentShip;
+    private void checkCollisions() {
+        Iterator<Projectile> playerProjectilesIterator = player.getProjectiles().iterator();
+        while (playerProjectilesIterator.hasNext()) {
+            Projectile playerProjectile = playerProjectilesIterator.next();
 
-        opponents.clear();
+            Iterator<Obstacle> obstaclesIterator = obstacles.iterator();
+            while (obstaclesIterator.hasNext()) {
+                Obstacle obstacle = obstaclesIterator.next();
 
-        for (int i = 0; i < num; i++) {
-            randX = rand.nextInt(0, getWidth() - OPPONENT_WIDTH);
-            randShip = rand.nextInt(7, 11);
-            opponentShip = new Ship(randShip, 2, shipImages.get(randShip), OPPONENT_WIDTH, OPPONENT_HEIGHT);
-            opponentShip.setImage(randShip, OPPONENT_WIDTH, OPPONENT_HEIGHT);
-            Object[] opponent = new Object[]{randX, 0, opponentShip, OPPONENT_SPEED, OPPONENT_SPEED};
-            opponents.add(opponent);
+                Iterator<Projectile> obstacleProjectilesIterator = obstacle.getProjectiles().iterator();
+                while (obstacleProjectilesIterator.hasNext()) {
+                    Projectile obstacleProjectile = obstacleProjectilesIterator.next();
+
+                    if (playerProjectile.intersects(obstacleProjectile)) {
+                        playerProjectilesIterator.remove();
+                        obstacleProjectilesIterator.remove();
+                        obstaclesIterator.remove();
+                        score += 10;
+                    }
+                }
+            }
         }
 
-        for (Object[] opponent : opponents) {
-            int opponentY = (int) opponent[1];
-            opponentY += OPPONENT_SPEED;
-            opponent[1] = opponentY;
+        Iterator<Obstacle> obstaclesIterator = obstacles.iterator();
+        while (obstaclesIterator.hasNext()) {
+            Obstacle obstacle = obstaclesIterator.next();
+            if (player.intersects(obstacle)) {
+                player.setLives(player.getLives() - 1);
+                obstaclesIterator.remove();
+            }
         }
     }
-// Push
+
+    private void checkPlayerOutOfLives() {
+        if (player.getLives() <= 0) {
+            player.setGameState(MENU);
+        }
+    }
+
     private void drawGame(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, width, height);
 
-        Image scaledPlayerShip = player.getImage().getScaledInstance(PLAYER_WIDTH, PLAYER_HEIGHT, Image.SCALE_SMOOTH);
-        g.drawImage(scaledPlayerShip, player.getX(), player.getY(), this);
+        if (player.getGameState() == MENU) {
+            g.setColor(Color.WHITE);
+            g.drawString("Press SPACE to Start or ESC to Exit", width / 2 - 200, height / 2);
+        } else if (player.getGameState() == GAME) {
+            player.draw(g);
 
-        for (Object[] opponent : opponents) {
-            int opponentX = (int) opponent[0];
-            int opponentY = (int) opponent[1];
-            Ship opponentShip = (Ship) opponent[2];
-
-            Image scaledOpponentShip = opponentShip.getImage().getScaledInstance(OPPONENT_WIDTH, OPPONENT_HEIGHT, Image.SCALE_SMOOTH);
-            g.drawImage(scaledOpponentShip, opponentX, opponentY, this);
+            for (Obstacle obstacle : obstacles) {
+                obstacle.draw(g);
+            }
         }
     }
-    
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        drawGame(g);
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new GameLoop();
+            GameLoop game = new GameLoop();
+            game.setVisible(true);
+
+            Timer timer = new Timer(16, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    game.updateGame();
+                    game.repaint();
+                }
+            });
+
+            timer.start();
         });
     }
 }
+
+
