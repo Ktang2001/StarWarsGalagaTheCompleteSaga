@@ -9,12 +9,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Player extends JPanel implements ActionListener, KeyListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Image image;
     private int x, y, lives;
     private List<Projectile> projectiles;
