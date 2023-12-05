@@ -36,22 +36,22 @@ public class Ship  {
 	}
 	public Image setImage(int shipNum) {
 		switch(shipNum) {
-		 case 0:
+		 case 1:
 			 this.shipImage = new ImageIcon("N1_Starfigher.png").getImage();
              break;
-		 case 1:
+		 case 2:
 			 this.shipImage = new ImageIcon("JediStarfighter.png").getImage();
 			 break;
-		 case 2:
+		 case 3:
 			 this.shipImage = new ImageIcon("ARC-170.png").getImage();
 			 break;
-		 case 3:
+		 case 4:
 			 this.shipImage = new ImageIcon("X-Wing.png").getImage();
 			 break;
-		 case 4:
+		 case 5:
 			 this.shipImage = new ImageIcon("Y-Wing.png").getImage();
 			 break;
-		 case 5:
+		 case 6:
 			 this.shipImage = new ImageIcon("falcon.png").getImage();
 			 break;
 		 case 7:
