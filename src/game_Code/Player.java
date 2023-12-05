@@ -90,6 +90,10 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     public Image getImage() {
         return this.image;
     }
+    
+    public void setImage(Image playerShip) {
+    	this.image = playerShip;
+    }
 
     public int getX() {
         return this.x;
