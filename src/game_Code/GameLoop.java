@@ -41,8 +41,6 @@ public class GameLoop extends JFrame {
         height = 700;
         setSize(width, height);
 
-        playerImage = new ImageIcon("N1_Starfighter.png").getImage().getScaledInstance(playerWidth, playerHeight, Image.SCALE_SMOOTH);
-        obstacleImage = new ImageIcon("VultureDroid.png").getImage().getScaledInstance(obstacleWidth, obstacleHeight, Image.SCALE_SMOOTH);
         player = new Player();
 
         addKeyListener(new KeyAdapter() {
@@ -177,6 +175,8 @@ public class GameLoop extends JFrame {
     private void drawGame(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,Toolkit.getDefaultToolkit().getScreenSize().width , Toolkit.getDefaultToolkit().getScreenSize().height);
+        g.setColor(Color.WHITE);
+        g.drawRect(100, 100,50, 50);
 
         if (player.getGameState() == MENU) {
             g.setColor(Color.WHITE);
