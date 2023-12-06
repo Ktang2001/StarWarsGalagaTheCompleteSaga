@@ -60,12 +60,19 @@ public class GameLoop extends JFrame {
         		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
         			startGame();
         		}
+        		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        			System.exit(0);
+        		}
         		break;
         	case Player.GAME:
         		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
         			player.shoot();
         		}
+        		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        			player.setGameState(player.MENU);
+        		}
         		break;
+        
         }
     }
 
