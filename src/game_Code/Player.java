@@ -22,6 +22,8 @@ public class Player extends JPanel implements ActionListener, KeyListener{
     private boolean engineFlameVisible;
     private int gameState;
 
+    public static final int MENU = 0;
+    public static final int GAME = 1;
     private static final int PLAYER_WIDTH = 50;
     private static final int PLAYER_HEIGHT = 50;
     private static final int PLAYER_SPEED = 5;
@@ -38,6 +40,7 @@ public class Player extends JPanel implements ActionListener, KeyListener{
         lives = PLAYER_LIVES;
         projectiles = new ArrayList<>();
         engineFlameVisible = false;
+        gameState = MENU;
     }
 
     public void resetPosition() {
@@ -134,7 +137,7 @@ public class Player extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	public int getGameState() {
-		return this.gameState;
+		return gameState;
 	}
 	
 	public void setGameState(int gameState) {

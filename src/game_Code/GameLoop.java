@@ -55,25 +55,22 @@ public class GameLoop extends JFrame {
     }
 
     private void handleKeyPress(KeyEvent e) {
-        if (player.getGameState() == MENU) {
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                startGame();
-            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                System.exit(0);
-            }
-        } else if (player.getGameState() == GAME) {
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                player.shoot();
-            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                player.setGameState(MENU);
-            } else {
-                player.handleKeyPress(e);
-            }
+        switch (player.getGameState()){
+        	case Player.MENU:
+        		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+        			startGame();
+        		}
+        		break;
+        	case Player.GAME:
+        		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+        			player.shoot();
+        		}
+        		break;
         }
     }
 
     private void startGame() {
-        player.setGameState(GAME);
+        player.setGameState(Player.GAME);
         player.reset();
         obstacles.clear();
         score = 0;
@@ -89,7 +86,7 @@ public class GameLoop extends JFrame {
     }
 
     private void updateGame() {
-        if (player.getGameState() == GAME) {
+        if (player.getGameState() == Player.GAME) {
         	boolean[] keys = new boolean[256];
         	
             player.move(keys);
@@ -175,8 +172,7 @@ public class GameLoop extends JFrame {
     private void drawGame(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,Toolkit.getDefaultToolkit().getScreenSize().width , Toolkit.getDefaultToolkit().getScreenSize().height);
-        g.setColor(Color.WHITE);
-        g.drawRect(100, 100,50, 50);
+        
 
         if (player.getGameState() == MENU) {
             g.setColor(Color.WHITE);
