@@ -24,7 +24,7 @@ public class GameLoop extends JFrame {
     private static final int GAME = 1;
 
     private int width, height;
-    private Image playerImage, obstacleImage;
+    private Image playerImage, opponentImage;
     private int playerWidth = 50, playerHeight = 75;
     private int obstacleWidth = 50, obstacleHeight = 50;
     private int playerSpeed = 5, obstacleSpeed = 3;
@@ -183,6 +183,17 @@ public class GameLoop extends JFrame {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,Toolkit.getDefaultToolkit().getScreenSize().width , Toolkit.getDefaultToolkit().getScreenSize().height);
         
+        Image playerImage = player.getImage();
+        if(playerImage != null) {
+        	g.drawImage(playerImage,  player.getX(), player.getY(), this);
+        }
+        
+        for(Opponent obstacle : obstacles) {
+        	Image opponentImage = obstacle.getImage();
+        	if(opponentImage != null) {
+        		g.drawImage(opponentImage, obstacle.getX(), obstacle.getY(), this);
+        	}
+        }
 
         if (player.getGameState() == MENU) {
             g.setColor(Color.WHITE);
@@ -191,7 +202,7 @@ public class GameLoop extends JFrame {
             player.draw(g);
 
             for (Opponent obstacle : obstacles) {
-                obstacle.draw(g, obstacleImage);
+                obstacle.draw(g, opponentImage);
             }
         }
     }
