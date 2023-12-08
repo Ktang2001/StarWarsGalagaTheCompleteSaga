@@ -99,7 +99,7 @@ public class GameLoop extends JFrame {
                 // Check for collision between opponent's projectile and player
                 if (projectileIntersectsPlayer(opponentProjectile, player)) {
                     opponentIterator.remove();
-                    lives--;  // Decrease player lives
+                    lives--;  
                 }
             }
 
