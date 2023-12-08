@@ -1,10 +1,5 @@
 package game_Code;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
-package Galiga_Game;
-
 import java.awt.Graphics;
 import java.awt.Image;
 
