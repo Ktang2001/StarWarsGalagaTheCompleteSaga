@@ -81,7 +81,7 @@ public class GameLoop extends JFrame {
         }
     }
 
-    private void updateGame() {
+    void updateGame() {
         player.move(getKeyState());
         generateOpponents();
 
@@ -205,8 +205,8 @@ public class GameLoop extends JFrame {
     
     private void checkPlayerOutOfLives() {
         if (lives <= 0) {
-            JOptionPane.showMessageDialog(this, "Game Over!\nYour Score: " + score, "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
+        	Menu postGameMenu = new Menu();
+            postGameMenu.showPostGameMenu(score);
         }
     }
 
@@ -238,22 +238,7 @@ public class GameLoop extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GameLoop game = new GameLoop();
-            game.setVisible(true);
-
-            Timer timer = new Timer(16, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    game.updateGame();
-                    game.repaint();
-                }
-            });
-
-            timer.start();
-        });
-    }
+    
 }
 
 
