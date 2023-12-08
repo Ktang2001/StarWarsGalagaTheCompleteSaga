@@ -82,26 +82,27 @@ public class GameLoop extends JFrame {
     }
 
     private void updateGame() {
-    	player.move(getKeyState());
+        player.move(getKeyState());
         generateOpponents();
 
         for (Projectile projectile : player.getProjectiles()) {
             projectile.move();
         }
+
         Iterator<Opponent> opponentIterator = opponents.iterator();
         while (opponentIterator.hasNext()) {
             Opponent opponent = opponentIterator.next();
 
-            
             for (Projectile opponentProjectile : opponent.getProjectile()) {
                 opponentProjectile.move();
+
+                // Check for collision between opponent's projectile and player
+                if (projectileIntersectsPlayer(opponentProjectile, player)) {
+                    opponentIterator.remove();
+                    lives--;  // Decrease player lives
+                }
             }
 
-        
-
-         opponentIterator = opponents.iterator();
-        while (opponentIterator.hasNext()) {
-            opponent = opponentIterator.next();
             opponent.move();
 
             Iterator<Projectile> projectileIterator = player.getProjectiles().iterator();
@@ -118,8 +119,8 @@ public class GameLoop extends JFrame {
 
         checkCollisions();
         checkPlayerOutOfLives();
-        }
-        }
+    }
+
     
     private void checkCollisions() {
         Iterator<Opponent> opponentIterator = opponents.iterator();
