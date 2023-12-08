@@ -88,10 +88,20 @@ public class GameLoop extends JFrame {
         for (Projectile projectile : player.getProjectiles()) {
             projectile.move();
         }
-
         Iterator<Opponent> opponentIterator = opponents.iterator();
         while (opponentIterator.hasNext()) {
             Opponent opponent = opponentIterator.next();
+
+            
+            for (Projectile opponentProjectile : opponent.getProjectile()) {
+                opponentProjectile.move();
+            }
+
+        
+
+         opponentIterator = opponents.iterator();
+        while (opponentIterator.hasNext()) {
+            opponent = opponentIterator.next();
             opponent.move();
 
             Iterator<Projectile> projectileIterator = player.getProjectiles().iterator();
@@ -108,7 +118,8 @@ public class GameLoop extends JFrame {
 
         checkCollisions();
         checkPlayerOutOfLives();
-    }
+        }
+        }
     
     private void checkCollisions() {
         Iterator<Opponent> opponentIterator = opponents.iterator();
