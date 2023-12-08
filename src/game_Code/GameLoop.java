@@ -111,27 +111,40 @@ public class GameLoop extends JFrame {
     }
     
     private void checkCollisions() {
-    	Iterator<Opponent> opponentIterator = opponents.iterator();
-    	while (opponentIterator.hasNext()) {
-    	    Opponent opponent = opponentIterator.next();
+        Iterator<Opponent> opponentIterator = opponents.iterator();
+        Iterator<Projectile> projectileIterator = projectiles.iterator();
+        while (opponentIterator.hasNext()) {
+            Opponent opponent = opponentIterator.next();
+            Projectile bolt = null;  
 
-    	    if (playerIntersectsOpponent(player, opponent)) {
-    	        opponentIterator.remove();
-    	        lives--;
-    	    }
+            if (projectileIterator.hasNext()) {
+                bolt = projectileIterator.next();
+            }
 
-    	    List<Projectile> projectilesToRemove = new ArrayList<>();
+            if (playerIntersectsOpponent(player, opponent)) {
+                opponentIterator.remove();
+                lives--;
+            } else {
+                
+                if (bolt != null && projectileIntersectsPlayer(bolt, player)) {
+                    projectileIterator.remove();
+                    lives--;
+                }
+            }
+
+            List<Projectile> projectilesToRemove = new ArrayList<>();
             for (Projectile projectile : projectiles) {
                 if (projectileIntersectsOpponent(projectile, opponent)) {
                     projectilesToRemove.add(projectile);
-                    opponentIterator.remove();
                     score += 50;
                 }
-            } 
-            
+            }
+
+           
             projectiles.removeAll(projectilesToRemove);
-    	}
+        }
     }
+
 
 
     private boolean playerIntersectsOpponent(Player player, Opponent opponent) {
@@ -141,7 +154,7 @@ public class GameLoop extends JFrame {
                 player.getY() + player.getHeight() > opponent.getY());
     }
     
-    private boolean projectileIntersectsPlayer(Opponent opponent, Player player) {
+    private boolean projectileIntersectsPlayer(Projectile opponent, Player player) {
         return (opponent.getX() < player.getX() + player.getWidth() &&
                 opponent.getX() + opponent.getWidth() > player.getX() &&
                 opponent.getY() < player.getY() + player.getHeight() &&

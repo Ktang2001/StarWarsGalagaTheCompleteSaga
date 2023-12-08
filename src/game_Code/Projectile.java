@@ -9,7 +9,7 @@ public class Projectile {
     private int x, y;
     private int width, height;
     private Image image;
-    private int speed = 5;
+    private int speed = 7;
     private boolean isPlayerProjectile;
 
     public Projectile(int x, int y, boolean isPlayerProjectile) {
