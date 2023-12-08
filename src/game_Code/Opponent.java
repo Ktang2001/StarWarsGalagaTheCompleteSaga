@@ -30,7 +30,7 @@ public class Opponent {
 
      public void move() {
          y += 3;
-         if (y > 600) {
+         if (y > Toolkit.getDefaultToolkit().getScreenSize().height) {
              resetPosition();
          }
          tryShoot();
@@ -53,7 +53,7 @@ public class Opponent {
     	 while (iterator.hasNext()) {
     		 Projectile projectile = iterator.next();
     		 projectile.move();
-    		 if(projectile.getY() > 600 || projectile.getY() < 0) {
+    		 if(projectile.getY() > Toolkit.getDefaultToolkit().getScreenSize().height || projectile.getY() < 0) {
     			 iterator.remove();
     		 }
     	 }
