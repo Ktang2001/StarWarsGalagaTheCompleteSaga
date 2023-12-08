@@ -13,102 +13,85 @@ import java.awt.*;
 public class Opponent {
 	 private int x, y;
      private int width, height;
-     private int speed;
      private Image image;
-     private static final int OPPONENT_WIDTH = 50;
-     private static final int OPPONENT_HEIGHT = 50;
-     private static final int OPPONENT_SPEED = 5;
-     private static final int PROJECTILE_WIDTH = 50;
-     private static final int PROJECTILE_HEIGHT = 50;
-     private static final Color RED = Color.RED;
      private List<Projectile> projectiles;
+     private float fireRate = 0.02f;
+     private float fireCooldown = 0;
+     
 
-     public Opponent() {
-         x = new Random().nextInt(width - OPPONENT_WIDTH);
-         image = new ImageIcon("VultureDroid.png").getImage();
-         image = new ImageIcon("Tri-Fighter.png").getImage();
-         image = image.getScaledInstance(OPPONENT_WIDTH, OPPONENT_HEIGHT, Image.SCALE_DEFAULT);
-         y = 0;
-         width = OPPONENT_WIDTH;
-         height = OPPONENT_HEIGHT;
-         speed = OPPONENT_SPEED;
-         projectiles = new ArrayList<>();
+     public Opponent(int x, int y){
+    	 this.x = x;
+    	 this.y = y;
+    	 this.width = 75;
+    	 this.height = 125;
+    	 this.image = new ImageIcon("VultureDroid.png").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+         this.projectiles = new ArrayList<>();
      }
 
      public void move() {
-         y += speed;
-         if (y > height) {
+         y += 3;
+         if (y > 600) {
              resetPosition();
          }
+         tryShoot();
+         updateProjectiles();
+     }
+     
+     private void tryShoot() {
+    	 if(new Random().nextFloat() < fireRate && fireCooldown <= 0) {
+    		 shoot();
+    		 fireCooldown = 1.0f / fireRate;
+    	 }
+     }
+     
+     private void shoot() {
+    	 projectiles.add(new Projectile(x + width / 2, y + height, false));
+     }
+     
+     private void updateProjectiles() {
+    	 Iterator<Projectile> iterator = projectiles.iterator();
+    	 while (iterator.hasNext()) {
+    		 Projectile projectile = iterator.next();
+    		 projectile.move();
+    		 if(projectile.getY() > 600 || projectile.getY() < 0) {
+    			 iterator.remove();
+    		 }
+    	 }
+    	 if (fireCooldown > 0) {
+    		 fireCooldown -= 1.0 / 60;
+    	 }
      }
 
      public void resetPosition() {
-         x = new Random().nextInt(width - OPPONENT_WIDTH);
+         x = new Random().nextInt(750);
          y = 0;
      }
-
-     public void shoot() {
-    	 int projectileX = x + (OPPONENT_WIDTH / 2) - (PROJECTILE_WIDTH / 2);
-         int projectileY = y;
-         int projectileWidth = PROJECTILE_WIDTH; 
-         int projectileHeight = PROJECTILE_HEIGHT; 
-         int projectileSpeed = 5; 
-    	 Projectile newProjectile = new Projectile(projectileX, projectileY, projectileWidth, projectileHeight, projectileSpeed, RED);
-         newProjectile.setProjectileSpeed(projectileSpeed);
-         projectiles.add(newProjectile);
-     }
-
-     public void updateProjectiles() {
-         Iterator<Projectile> iterator = projectiles.iterator();
-         while (iterator.hasNext()) {
-             Projectile projectile = iterator.next();
-             projectile.move();
-             if (projectile.getY() > PROJECTILE_HEIGHT) {
-                 iterator.remove();
-             }
-         }
-     }
-
-     public void draw(Graphics g, Image opponentImage) {
-         g.drawImage(opponentImage , x, y, null);
-         for (Projectile projectile : projectiles) {
-             projectile.draw(g);
-         }
-     }
      
-     public boolean intersects(Player obstacle) {
-     	return (x < obstacle.getX() + obstacle.getWidth() &&
-                 x + OPPONENT_WIDTH > obstacle.getX() &&
-                 y < obstacle.getY() + obstacle.getHeight() &&
-                 y + OPPONENT_HEIGHT > obstacle.getY());
- 	}
-
-     public Image getImage() {
-         return this.image;
-     }
-     
-     public void setImage(Image opponentShip) {
-     	this.image = opponentShip;
+     public void draw (Graphics g) {
+    	 g.drawImage(image,  x,  y,  null);
+    	 
+    	 for(Projectile projectile : projectiles) {
+    		 projectile.draw(g);
+    	 }
      }
      
      public int getX() {
-         return x;
+    	 return x;
      }
-
+     
      public int getY() {
-         return y;
+    	 return y;
      }
-
+     
      public int getWidth() {
-         return width;
+    	 return width;
      }
-
+     
      public int getHeight() {
-         return height;
+    	 return height;
      }
-
-     public List<Projectile> getProjectiles() {
-         return projectiles;
+     
+     public List<Projectile> getProjectile(){
+    	 return projectiles;
      }
- 
 }
