@@ -1,207 +1,93 @@
 package game_Code;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
-public class Player extends JPanel implements ActionListener, KeyListener{
-
-	private static final long serialVersionUID = 1L;
-	private Image playerImage;
-    private int x, y, lives;
+public class Player {
+	private int x, y;
+    private int width, height;
+    private Image image;
+    private int speed = 5;
+    private boolean moveLeft, moveRight;
     private List<Projectile> projectiles;
-    private boolean engineFlameVisible;
-    private int gameState;
+    private boolean isSpaceKeyPressed;
 
-    public static final int MENU = 0;
-    public static final int GAME = 1;
-    private static final int PLAYER_WIDTH = 50;
-    private static final int PLAYER_HEIGHT = 50;
-    private static final int PLAYER_SPEED = 5;
-    private static final int PLAYER_LIVES = 3;
-    private static final int PROJECTILE_WIDTH = 5;
-    private static final int WIDTH = 800; 
-    private static final int HEIGHT = 600; 
-    private static final Color BLUE = Color.BLUE;
-
-    public Player() {
-    	playerImage = new ImageIcon("N1_Starfighter.png").getImage();
-        playerImage = playerImage.getScaledInstance(PLAYER_WIDTH, PLAYER_HEIGHT, Image.SCALE_DEFAULT);
-        resetPosition();
-        lives = PLAYER_LIVES;
-        projectiles = new ArrayList<>();
-        engineFlameVisible = false;
-        gameState = MENU;
-    }
-
-    public void resetPosition() {
-        x = (WIDTH - PLAYER_WIDTH) / 2;
-        y = HEIGHT - PLAYER_HEIGHT;
+    public Player(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.width = 150;
+        this.height = 141;
+        this.projectiles = new ArrayList<>();
+        this.image = new ImageIcon("JediStarfighter.png").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
     public void move(boolean[] keys) {
-        if (keys[KeyEvent.VK_LEFT]) {
-            x -= PLAYER_SPEED;
+    	if (moveLeft && x > 0) {
+            x -= speed;
         }
-        if (keys[KeyEvent.VK_RIGHT]) {
-            x += PLAYER_SPEED;
+        if (moveRight && x < Toolkit.getDefaultToolkit().getScreenSize().width - width) {
+            x += speed;
         }
-        if (keys[KeyEvent.VK_UP]) {
-            y -= PLAYER_SPEED;
-            engineFlameVisible = true;
-            if (y < 0) {
-                y = 0;
-            }
-        } else {
-            engineFlameVisible = false;
-        }
-        if (keys[KeyEvent.VK_DOWN]) {
-            y += PLAYER_SPEED;
-            if (y > HEIGHT - PLAYER_HEIGHT) {
-                y = HEIGHT - PLAYER_HEIGHT;
-            }
-        }
-
-        if (x < 0) {
-            x = WIDTH - PLAYER_WIDTH;
-        } else if (x > WIDTH - PLAYER_WIDTH) {
-            x = 0;
-        }
-    }
-
-    public void shoot() {
-        int projectileX = x + (PLAYER_WIDTH / 2) - (PROJECTILE_WIDTH / 2);
-        int projectileY = y;
-        int projectileWidth = PLAYER_WIDTH;
-        int projectileHeight = PLAYER_HEIGHT;
-        int projectileSpeed = 5; 
-   	 	Projectile newProjectile = new Projectile(projectileX, projectileY, projectileWidth, projectileHeight, projectileSpeed, BLUE);
-        newProjectile.setProjectileSpeed(projectileSpeed);
-        projectiles.add(newProjectile);
-    }
-
-    public Image getImage() {
-        return this.playerImage;
     }
     
-    public void setImage(Image playerShip) {
-    	this.playerImage = playerShip;
+    public void shoot() {
+        projectiles.add(new Projectile(x + width / 2, y, true));
+    }
+    
+    public void draw(Graphics g) {
+        g.drawImage(image, x, y, null);
     }
 
     public int getX() {
-        return this.x;
+        return x;
     }
 
     public int getY() {
-        return this.y;
-    }
-    
-    public void setX(int x) {
-    	this.x = x;
-    }
-    
-    public void setY(int y) {
-    	this.y = y;
+        return y;
     }
 
-    public List<Projectile> getProjectiles() {
-        return this.projectiles;
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public List<Projectile> getProjectiles() {
+        return projectiles;
     }
-
-    public boolean isEngineFlameVisible() {
-        return engineFlameVisible;
+	
+	public boolean isSpaceKeyPressed() {
+        return isSpaceKeyPressed;
     }
-
-    public int getLives() {
-        return this.lives;
-    }
-    
-    public void setLives(int lives) {
-    	this.lives = lives;
-    }
-    
-    public boolean intersects(Opponent obstacle) {
-    	return (x < obstacle.getX() + obstacle.getWidth() &&
-                x + PLAYER_WIDTH > obstacle.getX() &&
-                y < obstacle.getY() + obstacle.getHeight() &&
-                y + PLAYER_HEIGHT > obstacle.getY());
-	}
 	
-	public int getGameState() {
-		return gameState;
-	}
-	
-	public void setGameState(int gameState) {
-		this.gameState = gameState;
-	} 
-	
-	public void reset() {
-		resetPosition();
-		setLives(PLAYER_LIVES);
-	}
-	
-	public void draw(Graphics g) {
-		g.drawImage(playerImage, x, y, this);
-		
-		for (Projectile projectile : projectiles) {
-	        g.setColor(Color.BLUE); 
-	        g.fillRect(projectile.getX(), projectile.getY(), projectile.getWidth(), projectile.getHeight());
-	    }
-	}
-	
-	public void updateProjectiles() {
-		List<Projectile> projectilesToRemove = new ArrayList<>();
-	    for (Projectile projectile : projectiles) {
-	        projectile.move(); 
-	        if (projectile.getY() < 0) {
-	            projectilesToRemove.add(projectile);
-	        }
-	    }
-	    projectiles.removeAll(projectilesToRemove);
-	}
-	
-	public void handleKeyPress(KeyEvent e) {
-		int key = e.getKeyCode();
-	    if (key == KeyEvent.VK_SPACE) {
-	        shoot();
-	    }
-	}
-
-	
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT) {
+            moveLeft = true;
+        } else if (key == KeyEvent.VK_RIGHT) {
+            moveRight = true;
+        } else if (key == KeyEvent.VK_SPACE) {
+            isSpaceKeyPressed = true;
+        }
 	}
-
-	@Override
+	
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-    // Additional methods for updating lives
-
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT) {
+            moveLeft = false;
+        } else if (key == KeyEvent.VK_RIGHT) {
+            moveRight = false;
+        } else if (key == KeyEvent.VK_SPACE) {
+            isSpaceKeyPressed = false;
+        }
+    }
 }
 

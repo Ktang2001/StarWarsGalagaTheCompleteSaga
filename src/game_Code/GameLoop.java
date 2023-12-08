@@ -1,55 +1,64 @@
 package game_Code;
 
-import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.*;
-import java.util.List;
-import java.util.Random;
-<<<<<<< Updated upstream
 import java.util.ArrayList;
 import java.util.Iterator;
-=======
->>>>>>> Stashed changes
+import java.util.List;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class GameLoop extends JFrame {
-
 	private static final long serialVersionUID = 1L;
-	private static final int MENU = 0;
-    private static final int GAME = 1;
 
-    private int width, height;
-    private Image playerImage, opponentImage;
-    private int playerWidth = 50, playerHeight = 75;
-    private int obstacleWidth = 50, obstacleHeight = 50;
-    private int playerSpeed = 5, obstacleSpeed = 3;
-    private int playerLives = 3;
-    private int score = 0;
-    private List<Opponent> obstacles = new ArrayList<Opponent>();
     private Player player;
-    private float enemyFireRate = 1.0f;
-    private float enemyFireCooldown = 0;
+    private List<Opponent> opponents;
+    private List<Projectile> projectiles;
+    private boolean[] keyState = new boolean[256];
+    private int score = 0;
+    private int lives = 3;
+    private int width = Toolkit.getDefaultToolkit().getScreenSize().width;
 
     public GameLoop() {
-        setTitle("Star Wars Attack: The Complete Saga");
+        setTitle("Star Wars Attack");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 
-        width = 1000;
-        height = 700;
-        setSize(width, height);
-
-        player = new Player();
+        player = new Player(Toolkit.getDefaultToolkit().getScreenSize().width / 2, Toolkit.getDefaultToolkit().getScreenSize().height - 180);
+        opponents = new ArrayList<>();
+        projectiles = new ArrayList<>();
 
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                handleKeyPress(e);
+                player.keyPressed(e);
+                
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_SPACE) {
+                	player.shoot();
+                }
+                
+                if (key >= 0 && key < 256) {
+                	keyState[key] = true;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                player.keyReleased(e);
             }
         });
 
@@ -57,166 +66,156 @@ public class GameLoop extends JFrame {
         requestFocusInWindow();
     }
 
-    private void handleKeyPress(KeyEvent e) {
-        switch (player.getGameState()){
-        	case Player.MENU:
-        		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-        			startGame();
-        		}
-        		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-        			System.exit(0);
-        		}
-        		break;
-        	case Player.GAME:
-        		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-        			player.shoot();
-        		}
-        		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-        			player.setGameState(player.MENU);
-        		}
-        		break;
-        
+    private void move(KeyEvent e) {
+    	int key = e.getKeyCode();
+    	
+        if (key == KeyEvent.VK_SPACE) {
+        	player.shoot();
         }
     }
 
-    private void startGame() {
-        player.setGameState(Player.GAME);
-        player.reset();
-        obstacles.clear();
-        score = 0;
-        player.setLives(playerLives);
-        player.resetPosition();
-    }
-
-    private void generateObstacles() {
-        if (new Random().nextInt(100) < 10) {
-            Opponent obstacle = new Opponent();
-            obstacles.add(obstacle);
+    private void generateOpponents() {
+    	if (new Random().nextInt(100) < 2) {
+            Opponent opponent = new Opponent(new Random().nextInt(width), 0);
+            opponents.add(opponent);
         }
     }
 
     private void updateGame() {
-        if (player.getGameState() == Player.GAME) {
-        	boolean[] keys = new boolean[256];
-        	
-            player.move(keys);
+    	player.move(getKeyState());
+        generateOpponents();
 
-            generateObstacles();
-
-            Iterator<Opponent> iterator = obstacles.iterator();
-            while (iterator.hasNext()) {
-                Opponent obstacle = iterator.next();
-                obstacle.move();
-                if (obstacle.getY() > height) {
-                    iterator.remove();
-                    score += 10;
-                }
-
-                if (new Random().nextFloat() < enemyFireRate && enemyFireCooldown <= 0) {
-                    obstacle.shoot();
-                    enemyFireCooldown = 1.0f / enemyFireRate;
-                }
-                
-                List<Projectile> opponentProjectilesToRemove = new ArrayList<>();
-                for (Projectile projectile : obstacle.getProjectiles()) {
-                    projectile.move();
-                    if (projectile.getY() > height) {
-                        opponentProjectilesToRemove.add(projectile);
-                    }
-                }
-                obstacle.getProjectiles().removeAll(opponentProjectilesToRemove);
-            }
-            
-
-            if (enemyFireCooldown > 0) {
-                enemyFireCooldown -= 1.0 / 60;
-            }
-
-            player.updateProjectiles();
-
-            checkCollisions();
-            
-            checkPlayerOutOfLives();
+        for (Projectile projectile : player.getProjectiles()) {
+            projectile.move();
         }
-    }
 
+        Iterator<Opponent> opponentIterator = opponents.iterator();
+        while (opponentIterator.hasNext()) {
+            Opponent opponent = opponentIterator.next();
+            opponent.move();
+
+            Iterator<Projectile> projectileIterator = player.getProjectiles().iterator();
+            while (projectileIterator.hasNext()) {
+                Projectile projectile = projectileIterator.next();
+
+                if (projectileIntersectsOpponent(projectile, opponent)) {
+                    opponentIterator.remove();
+                    projectileIterator.remove();
+                    score += 50;
+                }
+            }
+        }
+
+        checkCollisions();
+        checkPlayerOutOfLives();
+    }
+    
     private void checkCollisions() {
-        Iterator<Projectile> playerProjectilesIterator = player.getProjectiles().iterator();
-        while (playerProjectilesIterator.hasNext()) {
-            Projectile playerProjectile = playerProjectilesIterator.next();
+    	Iterator<Opponent> opponentIterator = opponents.iterator();
+    	while (opponentIterator.hasNext()) {
+    	    Opponent opponent = opponentIterator.next();
 
-            Iterator<Opponent> obstaclesIterator = obstacles.iterator();
-            while (obstaclesIterator.hasNext()) {
-                Opponent obstacle = obstaclesIterator.next();
+    	    if (playerIntersectsOpponent(player, opponent)) {
+    	        opponentIterator.remove();
+    	        lives--;
+    	    }
 
-                Iterator<Projectile> obstacleProjectilesIterator = obstacle.getProjectiles().iterator();
-                while (obstacleProjectilesIterator.hasNext()) {
-                    Projectile obstacleProjectile = obstacleProjectilesIterator.next();
-
-                    if (playerProjectile.intersects(obstacleProjectile)) {
-                        playerProjectilesIterator.remove();
-                        obstacleProjectilesIterator.remove();
-                        obstaclesIterator.remove();
-                        score += 10;
-                    }
+    	    List<Projectile> projectilesToRemove = new ArrayList<>();
+            for (Projectile projectile : projectiles) {
+                if (projectileIntersectsOpponent(projectile, opponent)) {
+                    projectilesToRemove.add(projectile);
+                    opponentIterator.remove();
+                    score += 50;
                 }
-            }
-        }
-
-        Iterator<Opponent> obstaclesIterator = obstacles.iterator();
-        while (obstaclesIterator.hasNext()) {
-            Opponent obstacle = obstaclesIterator.next();
-            if (player.intersects(obstacle)) {
-                player.setLives(player.getLives() - 1);
-                obstaclesIterator.remove();
-            }
-        }
+            } 
+            
+            projectiles.removeAll(projectilesToRemove);
+    	}
     }
 
+
+    private boolean playerIntersectsOpponent(Player player, Opponent opponent) {
+        return (player.getX() < opponent.getX() + opponent.getWidth() &&
+                player.getX() + player.getWidth() > opponent.getX() &&
+                player.getY() < opponent.getY() + opponent.getHeight() &&
+                player.getY() + player.getHeight() > opponent.getY());
+    }
+    
+    private boolean projectileIntersectsPlayer(Opponent opponent, Player player) {
+        return (opponent.getX() < player.getX() + player.getWidth() &&
+                opponent.getX() + opponent.getWidth() > player.getX() &&
+                opponent.getY() < player.getY() + player.getHeight() &&
+                opponent.getY() + opponent.getHeight() > player.getY());
+    }
+
+    private boolean projectileIntersectsOpponent(Projectile projectile, Opponent opponent) {
+        return (projectile.getX() < opponent.getX() + opponent.getWidth() &&
+                projectile.getX() + projectile.getWidth() > opponent.getX() &&
+                projectile.getY() < opponent.getY() + opponent.getHeight() &&
+                projectile.getY() + projectile.getHeight() > opponent.getY());
+    }
+
+    private boolean[] getKeyState() {
+        boolean[] keys = new boolean[256];
+        for (int i = 0; i < keys.length; i++) {
+            keys[i] = keyState[i];
+        }
+        return keys;
+    }
+    
+    public void keyPressed(KeyEvent e) {
+    	move(e);
+        int key = e.getKeyCode();
+        if (key >= 0 && key < 256) {
+            keyState[key] = true;
+        }
+    }
+    
+    public void keyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+        if (key >= 0 && key < 256) {
+            keyState[key] = false;
+        }
+    }
+    
     private void checkPlayerOutOfLives() {
-        if (player.getLives() <= 0) {
-            player.setGameState(MENU);
+        if (lives <= 0) {
+            JOptionPane.showMessageDialog(this, "Game Over!\nYour Score: " + score, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
         }
     }
 
     private void drawGame(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0,Toolkit.getDefaultToolkit().getScreenSize().width , Toolkit.getDefaultToolkit().getScreenSize().height);
-        
-        Image playerImage = player.getImage();
-        if(playerImage != null) {
-        	g.drawImage(playerImage,  player.getX(), player.getY(), this);
-        }
-        
-        for(Opponent obstacle : obstacles) {
-        	Image opponentImage = obstacle.getImage();
-        	if(opponentImage != null) {
-        		g.drawImage(opponentImage, obstacle.getX(), obstacle.getY(), this);
-        	}
+
+        player.draw(g);
+
+        for (Opponent opponent : opponents) {
+            opponent.draw(g);
         }
 
-        if (player.getGameState() == MENU) {
-            g.setColor(Color.WHITE);
-            g.drawString("Press SPACE to Start or ESC to Exit",Toolkit.getDefaultToolkit().getScreenSize().width/2  , Toolkit.getDefaultToolkit().getScreenSize().height/2);
-        } else if (player.getGameState() == GAME) {
-            player.draw(g);
-
-            for (Opponent obstacle : obstacles) {
-                obstacle.draw(g, opponentImage);
-            }
+        for (Projectile projectile : projectiles) {
+            projectile.draw(g);
         }
+
+        g.setColor(Color.WHITE);
+        g.drawString("Score: " + score, 10, 100);
+        g.drawString("Lives: " + lives, getWidth() - 70, 100);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         drawGame(g);
+        for (Projectile projectile : player.getProjectiles()) {
+            projectile.draw(g);
+        }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             GameLoop game = new GameLoop();
-            game.setExtendedState(JFrame.MAXIMIZED_BOTH);
             game.setVisible(true);
 
             Timer timer = new Timer(16, new ActionListener() {
