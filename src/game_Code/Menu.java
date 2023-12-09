@@ -69,43 +69,39 @@ public class Menu extends JFrame {
     }
 
 
-        public void showPostGameMenu(int score) {
-            setTitle("Star Wars Attack - Game Over");
-            setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+    public void showPostGameMenu(int score) {
+    	setTitle("Star Wars Attack - Game Over");
+        setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 
-            JPanel panel = new JPanel();
-            add(panel);
-            placePostGameComponents(panel, score);
+        JPanel panel = new JPanel();
+        add(panel);
+        placePostGameComponents(panel, score);
 
-            setVisible(true);
-        }
+        setVisible(true);
+    }
 
-        private void placePostGameComponents(JPanel panel, int score) {
-            panel.setLayout(null);
+    private void placePostGameComponents(JPanel panel, int score) {
+        panel.setLayout(null);
 
-            JLabel gameOverLabel = new JLabel("Game Over!");
-            gameOverLabel.setBounds(150, 10, 200, 30);
-            panel.add(gameOverLabel);
+        JLabel gameOverLabel = new JLabel("Game Over!");
+        gameOverLabel.setBounds(150, 10, 200, 30);
+        panel.add(gameOverLabel);
 
-            JLabel scoreLabel = new JLabel("Your Score: " + score);
-            scoreLabel.setBounds(150, 50, 200, 30);
-            panel.add(scoreLabel);
+        JLabel scoreLabel = new JLabel("Your Score: " + score);
+        scoreLabel.setBounds(150, 50, 200, 30);
+        panel.add(scoreLabel);
 
-            JButton exitButton = new JButton("Exit");
-            exitButton.setBounds(150, 100, 100, 30);
-            panel.add(exitButton);
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBounds(150, 100, 100, 30);
+        panel.add(exitButton);
 
-            exitButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
-                }
-            });
-        }
-
-  
-    
-
+        exitButton.addActionListener(new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+            }
+        });
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

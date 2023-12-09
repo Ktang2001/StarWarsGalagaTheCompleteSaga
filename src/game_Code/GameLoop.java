@@ -121,7 +121,6 @@ public class GameLoop extends JFrame {
         checkPlayerOutOfLives();
     }
 
-    
     private void checkCollisions() {
         Iterator<Opponent> opponentIterator = opponents.iterator();
         Iterator<Projectile> projectileIterator = projectiles.iterator();
@@ -156,8 +155,6 @@ public class GameLoop extends JFrame {
             projectiles.removeAll(projectilesToRemove);
         }
     }
-
-
 
     private boolean playerIntersectsOpponent(Player player, Opponent opponent) {
         return (player.getX() < opponent.getX() + opponent.getWidth() &&
@@ -207,6 +204,7 @@ public class GameLoop extends JFrame {
         if (lives <= 0) {
         	Menu postGameMenu = new Menu();
             postGameMenu.showPostGameMenu(score);
+            System.exit(0);
         }
     }
 
@@ -237,8 +235,6 @@ public class GameLoop extends JFrame {
             projectile.draw(g);
         }
     }
-
-    
 }
 
 
