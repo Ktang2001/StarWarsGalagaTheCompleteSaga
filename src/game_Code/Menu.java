@@ -2,6 +2,11 @@ package game_Code;
 
 import javax.swing.*;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,29 +28,40 @@ public class Menu extends JFrame {
     }
 
     private void placeComponents(JPanel panel) {
-        panel.setLayout(null);
+    	panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 20, 20, 20);
 
         JLabel headerLabel = new JLabel("Star Wars Attack");
-        headerLabel.setBounds(150, 10, 200, 30);
-        panel.add(headerLabel);
+        headerLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(headerLabel, gbc);
 
         JTextArea controlsArea = new JTextArea("Controls:\n\n" +
-                "Move: Arrow keys\n" +
+                "Move: Left and Right Arrow keys\n" +
                 "Shoot: Space bar\n" +
                 "Exit: Escape key\n\n" +
                 "Press Space bar to start the game.");
-        controlsArea.setBounds(50, 50, 300, 80);
-        controlsArea.setEditable(false);
-        panel.add(controlsArea);
+        controlsArea.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        controlsArea.setPreferredSize(new Dimension(400, 120));
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        panel.add(controlsArea, gbc);
 
         JButton startButton = new JButton("Start Game");
-        startButton.setBounds(150, 140, 100, 30);
-        panel.add(startButton);
+        startButton.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(startButton, gbc);
 
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); 
+                dispose();
                 startGame();
             }
         });
@@ -107,5 +123,5 @@ public class Menu extends JFrame {
         SwingUtilities.invokeLater(() -> {
             Menu initialMenu = new Menu();
         });
-    }
+    }  
 }

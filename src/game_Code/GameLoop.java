@@ -235,6 +235,8 @@ public class GameLoop extends JFrame {
             projectile.draw(g);
         }
     }
+    
+    
 }
 
 
