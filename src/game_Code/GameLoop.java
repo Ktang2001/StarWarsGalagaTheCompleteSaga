@@ -2,6 +2,7 @@ package game_Code;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -222,8 +223,9 @@ public class GameLoop extends JFrame {
         }
 
         g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
         g.drawString("Score: " + score, 10, 100);
-        g.drawString("Lives: " + lives, getWidth() - 70, 100);
+        g.drawString("Lives: " + lives, getWidth() - 93, 100);
     }
 
     @Override
