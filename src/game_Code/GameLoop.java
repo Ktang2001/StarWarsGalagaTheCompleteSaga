@@ -96,7 +96,6 @@ public class GameLoop extends JFrame {
             for (Projectile opponentProjectile : opponent.getProjectile()) {
                 opponentProjectile.move();
 
-                // Check for collision between opponent's projectile and player
                 if (projectileIntersectsPlayer(opponentProjectile, player)) {
                     opponentIterator.remove();
                     lives--;  
@@ -235,8 +234,6 @@ public class GameLoop extends JFrame {
             projectile.draw(g);
         }
     }
-    
-    
 }
 
 

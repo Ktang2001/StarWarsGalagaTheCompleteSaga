@@ -2,8 +2,10 @@ package game_Code;
 
 import javax.swing.*;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -20,7 +22,15 @@ public class Menu extends JFrame {
         setResizable(false);
         setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon backgroundImage = new ImageIcon("Menu-Background.png"); 
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        
         add(panel);
         placeComponents(panel);
 
@@ -33,7 +43,8 @@ public class Menu extends JFrame {
         gbc.insets = new Insets(20, 20, 20, 20);
 
         JLabel headerLabel = new JLabel("Star Wars Attack");
-        headerLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        headerLabel.setFont(new Font("Courier New", Font.BOLD, 40));
+        headerLabel.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -45,14 +56,18 @@ public class Menu extends JFrame {
                 "Shoot: Space bar\n" +
                 "Exit: Escape key\n\n" +
                 "Press Space bar to start the game.");
-        controlsArea.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        controlsArea.setFont(new Font("Courier New", Font.PLAIN, 20));
+        controlsArea.setForeground(Color.WHITE); 
+        controlsArea.setBackground(Color.BLACK);
         controlsArea.setPreferredSize(new Dimension(400, 120));
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         panel.add(controlsArea, gbc);
 
         JButton startButton = new JButton("Start Game");
-        startButton.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        startButton.setFont(new Font("Courier New", Font.BOLD, 30));
+        controlsArea.setForeground(Color.WHITE); 
+        controlsArea.setBackground(Color.BLACK);
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
