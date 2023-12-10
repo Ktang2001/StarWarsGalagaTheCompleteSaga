@@ -215,9 +215,9 @@ public class GameLoop extends JFrame {
         }
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        g.setFont(new Font("Courier New", Font.PLAIN, 24));
         g.drawString("Score: " + score, 10, 100);
-        g.drawString("Lives: " + lives, getWidth() - 93, 100);
+        g.drawString("Lives: " + lives, getWidth() - 125, 100);
     }
 
     @Override
